@@ -27,7 +27,6 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
@@ -121,7 +120,7 @@ public class RobotContainer {
         DriveCommands.joystickDrive(
             drive,
             () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
+            () -> controller.getLeftX(),
             () -> -controller.getRightX()));
 
     // Lock to 0° when A button is held
@@ -131,7 +130,7 @@ public class RobotContainer {
             DriveCommands.joystickDriveAtAngle(
                 drive,
                 () -> -controller.getLeftY(),
-                () -> -controller.getLeftX(),
+                () -> controller.getLeftX(),
                 () -> new Rotation2d()));
 
     // Switch to X pattern when X button is pressed
