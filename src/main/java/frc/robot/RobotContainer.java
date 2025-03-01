@@ -1,32 +1,20 @@
-// Copyright 2021-2025 FRC 6328
-// http://github.com/Mechanical-Advantage
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// version 3 as published by the Free Software Foundation or
-// available in the root directory of this project.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.ElevatorCommands;
-import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.OutakeCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.Drive;
@@ -35,22 +23,12 @@ import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.mechanism.Elevator;
-import frc.robot.subsystems.mechanism.Intake;
 import frc.robot.subsystems.mechanism.Outake;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private final Elevator elevator = new Elevator();
-  private final Intake intake = new Intake();
   private final Outake outake = new Outake();
 
   // Controller
@@ -60,27 +38,20 @@ public class RobotContainer {
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
 
+  private final SendableChooser<Command> autoChooseer;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    elevator.setDefaultCommand(
-        new ElevatorCommands(
-            elevator,
-            () -> -controller2.getRawAxis(1),
-            () -> controller2.getRawButton(1),
-            null,
-            null));
 
-    intake.setDefaultCommand(
-        new IntakeCommands(
-            intake, () -> controller2.getRawButton(1), () -> controller2.getRawButton(2)));
-
+    // Intake
     outake.setDefaultCommand(
         new OutakeCommands(
             outake,
-            () -> controller2.getRawButton(3),
-            null,
+            () -> controller2.getRawButton(1),
             () -> controller2.getRawButton(4),
-            null));
+            () -> controller2.getRawButton(3),
+            () -> controller2.getRawButton(2),
+            () -> controller2.getRawAxis(1)));
 
     switch (Constants.currentMode) {
       case REAL:
@@ -136,6 +107,18 @@ public class RobotContainer {
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
+    NamedCommands.registerCommand(
+        "Outake Full", new InstantCommand(() -> outake.OutakeController(1), outake));
+
+    NamedCommands.registerCommand(
+        "Outake Mid", new InstantCommand(() -> outake.OutakeController(0.5), outake));
+
+    NamedCommands.registerCommand(
+        "Outake Stop", new InstantCommand(() -> outake.OutakeController(0), outake));
+
+    autoChooseer = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("AutoChooser", autoChooseer);
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -151,8 +134,8 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftX(),
             () -> -controller.getLeftY(),
+            () -> -controller.getLeftX(),
             () -> -controller.getRightX()));
 
     // Lock to 0° when A button is held
@@ -161,11 +144,11 @@ public class RobotContainer {
         .whileTrue(
             DriveCommands.joystickDriveAtAngle(
                 drive,
-                () -> controller.getLeftX(),
                 () -> controller.getLeftY(),
+                () -> -controller.getLeftX(),
                 () -> new Rotation2d()));
 
-    // Switch to X pattern when X button is pressed
+    // Switch to X pattern when X button is pressedzzzzzz
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Reset gyro to 0° when B button is pressed
@@ -180,13 +163,8 @@ public class RobotContainer {
                 .ignoringDisable(true));
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    // return autoChooser.get();  scfs
-    return new PathPlannerAuto("Example");
+    //    return DriveCommands.drivefor(drive, 3);
+    return autoChooseer.getSelected();
   }
 }

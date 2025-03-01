@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import frc.robot.subsystems.drive.Drive;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -292,5 +293,24 @@ public class DriveCommands {
     double[] positions = new double[4];
     Rotation2d lastAngle = new Rotation2d();
     double gyroDelta = 0.0;
+  }
+
+  public static Command drivefor(Drive swerve, double time) {
+    System.out.println("AUTO: " + time);
+    Timer timer = new Timer();
+    return new FunctionalCommand(
+        () -> {
+          timer.reset();
+          timer.start();
+        },
+        () -> {
+          ChassisSpeeds spwChassisSpeeds = new ChassisSpeeds(5, 0, 0);
+          swerve.runVelocity(spwChassisSpeeds);
+        },
+        (Boolean bool) -> {
+          swerve.stop();
+        },
+        () -> timer.get() > time,
+        swerve);
   }
 }
