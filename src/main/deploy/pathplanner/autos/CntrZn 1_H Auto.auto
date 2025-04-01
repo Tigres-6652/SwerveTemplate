@@ -11,9 +11,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "BgRvlZn2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CntrZn 1_H"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ElevatorL2"
+                }
+              }
+            ]
           }
         },
         {
@@ -25,19 +38,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Outake Full"
+            "name": "OutakeFull"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 3.0
+            "waitTime": 0.5
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Outake Stop"
+            "name": "OutakeStop"
           }
         },
         {

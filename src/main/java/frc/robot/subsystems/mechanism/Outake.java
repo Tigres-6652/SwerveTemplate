@@ -1,15 +1,17 @@
 package frc.robot.subsystems.mechanism;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Outake extends SubsystemBase {
-  WPI_TalonSRX RightOutakeMotor = new WPI_TalonSRX(13);
-  WPI_TalonSRX LeftOutakeMotor = new WPI_TalonSRX(14);
+  WPI_VictorSPX OutakeMotor = new WPI_VictorSPX(16);
 
   public void OutakeController(double OutakeSpeed) {
-    RightOutakeMotor.set(OutakeSpeed);
-    LeftOutakeMotor.set(OutakeSpeed);
+    OutakeMotor.set(-OutakeSpeed);
+  }
+
+  public void OutakeControl(double OutakeSpeedi) {
+    OutakeMotor.set(-OutakeSpeedi);
   }
 
   public Outake() {}

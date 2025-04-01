@@ -304,7 +304,7 @@ public class DriveCommands {
           timer.start();
         },
         () -> {
-          ChassisSpeeds spwChassisSpeeds = new ChassisSpeeds(5, 0, 0);
+          ChassisSpeeds spwChassisSpeeds = new ChassisSpeeds(-5, 0, 0);
           swerve.runVelocity(spwChassisSpeeds);
         },
         (Boolean bool) -> {
