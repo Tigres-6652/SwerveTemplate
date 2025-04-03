@@ -27,26 +27,22 @@ public class ElevatorCommand extends Command {
 
   @Override
   public void initialize() {
-    elevator.MotorConfig();
-    elevator.ResetMode();
+    elevator.resetPosition();
   }
 
   @Override
   public void execute() {
     if (BlqFree.get() == true) {
-      elevator.FreeMot(Free.get() * .5);
+      elevator.freePosition(Free.get() * .5);
 
     } else if (Home.get() == true) {
-      elevator.PstDist(0);
+      elevator.elevatorPosition(0);
 
     } else if (Pstn1.get() == true) {
-      elevator.PstDist(-40);
+      elevator.elevatorPosition(-40);
 
     } else if (Pstn2.get() == true) {
-      elevator.PstDist(-75);
-
-    } else {
-      elevator.PstDist(elevator.getElevatorHeight());
+      elevator.elevatorPosition(-75);
     }
   }
 

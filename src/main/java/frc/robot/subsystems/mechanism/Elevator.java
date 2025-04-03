@@ -1,8 +1,7 @@
 package frc.robot.subsystems.mechanism;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,37 +12,56 @@ public class Elevator extends SubsystemBase {
 
   DigitalInput LimitSwich = new DigitalInput(1);
 
-  SparkMaxConfig leaderConfig = new SparkMaxConfig();
-  SparkMaxConfig followerConfig = new SparkMaxConfig();
-  SparkMaxConfig resetConfig = new SparkMaxConfig();
+  double position;
 
-  PIDController PIDConfig = new PIDController(0.3, 0, 0.0);
+  public Elevator() {
+    TalonELevatorRigt.configFactoryDefault();
+    TalonELevatorLeft.configFactoryDefault();
 
-  public void FreeMot(double speed) {
-    TalonELevatorRigt.set(speed);
+    TalonELevatorRigt.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
+
+    TalonELevatorRigt.setSensorPhase(true);
+
+    TalonELevatorRigt.configNominalOutputForward(0, 30);
+    TalonELevatorRigt.configNominalOutputReverse(0, 30);
+    TalonELevatorRigt.configPeakOutputForward(1, 30);
+    TalonELevatorRigt.configPeakOutputReverse(-1, 30);
+
+    TalonELevatorRigt.configAllowableClosedloopError(0, 0, 0);
+
+    TalonELevatorRigt.config_kP(3, 0, 30);
+    TalonELevatorRigt.config_kI(0, 0, 30);
+    TalonELevatorRigt.config_kD(0, 0, 30);
+    TalonELevatorRigt.config_kF(0, 0, 30);
+  }
+
+  public double absolutePosition() {
+    return TalonELevatorRigt.getSensorCollection().getPulseWidthPosition() * 0.5;
+  }
+
+  public void elevatorPosition(double input) {
+    input = position / 4096 * 0.5;
+    TalonELevatorRigt.setSelectedSensorPosition(position, 0, 30);
+    TalonELevatorLeft.setSelectedSensorPosition(position, 0, 30);
+  }
+
+  public void freePosition(double speed) {
     TalonELevatorLeft.set(speed);
+    TalonELevatorRigt.set(speed);
   }
 
-  public double getElevatorHeight() {
-    return 0;
+  public void resetPosition() {
+    TalonELevatorRigt.configFactoryDefault();
+    TalonELevatorLeft.configFactoryDefault();
   }
 
-  public void PstDist(double distancia) {}
-
-  public boolean LimitHome() {
+  public boolean Limit() {
     return LimitSwich.get();
   }
 
-  public void MotorConfig() {}
-
-  public void ResetMode() {}
-
-  public Elevator() {}
-
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Distancia", getElevatorHeight());
-    SmartDashboard.putBoolean("limit", LimitHome());
-    SmartDashboard.putBoolean("Limitdirect", LimitSwich.get());
+    SmartDashboard.putNumber("absolute position", absolutePosition());
+    SmartDashboard.putBoolean("limit", Limit());
   }
 }

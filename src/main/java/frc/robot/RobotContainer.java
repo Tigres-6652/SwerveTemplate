@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.OutakeCommands;
+import frc.robot.commands.VisionCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -21,6 +22,7 @@ import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.mechanism.Elevator;
 import frc.robot.subsystems.mechanism.Outake;
+import frc.robot.subsystems.vision.WebCam;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class RobotContainer {
@@ -28,6 +30,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Elevator elevator = new Elevator();
   private final Outake outake = new Outake();
+  private final WebCam webCam = new WebCam();
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -45,9 +48,9 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "OutakeStop", new InstantCommand(() -> outake.OutakeController(0), outake));
     NamedCommands.registerCommand(
-        "ElevatorL2", new InstantCommand(() -> elevator.PstDist(-65), elevator));
+        "ElevatorL2", new InstantCommand(() -> elevator.elevatorPosition(-65), elevator));
     NamedCommands.registerCommand(
-        "ElevatorHome", new InstantCommand(() -> elevator.PstDist(0), elevator));
+        "ElevatorHome", new InstantCommand(() -> elevator.elevatorPosition(0), elevator));
 
     // Intake
     outake.setDefaultCommand(
@@ -64,6 +67,8 @@ public class RobotContainer {
             () -> controller2.getRawButton(4), // Pstn2    /Y
             () -> controller2.getRawButton(6), // BlqFree  /RB
             () -> controller2.getRawAxis(5))); // FreeMtn  /LY
+
+    webCam.setDefaultCommand(new VisionCommands(webCam));
 
     switch (Constants.currentMode) {
       case REAL:
@@ -100,7 +105,7 @@ public class RobotContainer {
         break;
     }
 
-    /// Set up auto routines
+    // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Configure the button bindings
