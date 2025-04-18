@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.757967715231788,
-        "y": 5.376117549668874
+        "x": 1.671,
+        "y": 7.381
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.227298841059603,
-        "y": 6.110265728476821
+        "x": 1.6634726821192052,
+        "y": 6.1025248344370855
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.6489445364238413,
-        "y": 7.366473509933774
+        "x": 3.2034561258278145,
+        "y": 3.6327400662251654
       },
       "prevControl": {
-        "x": 2.3027110927152314,
-        "y": 6.69817880794702
+        "x": 2.339031456953643,
+        "y": 4.039528145695364
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -53.285797023953755
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Alliance Zone",
+  "folder": "Alliance Zone JAB",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -118.496
+    "rotation": -54.36
   },
   "useDefaultConstraints": true
 }

@@ -3,8 +3,10 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "Center Zone",
-    "Alliance Zone"
+    "Alliance Zone IJA",
+    "Alliance Zone JAB",
+    "Center Line",
+    "Rival Zone FEB"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,

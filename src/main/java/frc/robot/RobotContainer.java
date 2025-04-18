@@ -15,7 +15,7 @@ import frc.robot.commands.OutakeCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIONavX;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
@@ -45,9 +45,13 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "OutakeStop", new InstantCommand(() -> outake.OutakeController(0), outake));
     NamedCommands.registerCommand(
-        "ElevatorL2", new InstantCommand(() -> elevator.PstDist(-65), elevator));
+        "ElevatorL2", new InstantCommand(() -> elevator.MovimientoElevador(-110), elevator));
     NamedCommands.registerCommand(
-        "ElevatorHome", new InstantCommand(() -> elevator.PstDist(0), elevator));
+        "Zero", new InstantCommand(() -> elevator.MovimientoElevador(0), elevator));
+    NamedCommands.registerCommand(
+        "ElevatorHome", new InstantCommand(() -> elevator.MovimientoElevador(-2), elevator));
+    NamedCommands.registerCommand(
+        "Reset", new InstantCommand(() -> elevator.ResetEncoderLimit(true), elevator));
 
     // Intake
     outake.setDefaultCommand(
@@ -63,14 +67,15 @@ public class RobotContainer {
             () -> controller2.getRawButton(3), // Pstn1    /X
             () -> controller2.getRawButton(4), // Pstn2    /Y
             () -> controller2.getRawButton(6), // BlqFree  /RB
-            () -> controller2.getRawAxis(5))); // FreeMtn  /LY
+            () -> controller2.getRawButton(2), // setZero
+            () -> controller2.getRawAxis(1))); // FreeMtn  /LY
 
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         drive =
             new Drive(
-                new GyroIONavX(),
+                new GyroIOPigeon2(),
                 new ModuleIOTalonFX(TunerConstants.FrontLeft),
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
@@ -112,9 +117,9 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> controller.getLeftY(),
-            () -> controller.getLeftX(),
-            () -> controller.getRightX()));
+            () -> -controller.getLeftY(),
+            () -> -controller.getLeftX(),
+            () -> -controller.getRightX()));
 
     // Lock to 0° when A button is held
     controller
@@ -123,7 +128,7 @@ public class RobotContainer {
             DriveCommands.joystickDriveAtAngle(
                 drive,
                 () -> controller.getLeftY(),
-                () -> -controller.getLeftX(),
+                () -> controller.getLeftX(),
                 () -> new Rotation2d()));
 
     // Switch to X pattern when X button is pressedzzzzzz

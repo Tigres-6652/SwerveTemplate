@@ -20,8 +20,8 @@ public class OutakeCommands extends Command {
 
   @Override
   public void execute() {
-    outake.OutakeController(Disp.get());
-    outake.OutakeControl(Apunt.get());
+    outake.OutakeControl(Disp.get() * 0.5);
+    outake.OutakeControl(Apunt.get() * 0.7);
   }
 
   @Override

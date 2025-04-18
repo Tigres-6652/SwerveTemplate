@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.5836920529801315,
-        "y": 7.540811258278145
+        "x": 7.598220198675497,
+        "y": 0.5164528145695363
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.387562086092715,
-        "y": 6.73449917218543
+        "x": 6.435968543046357,
+        "y": 0.9740894039735097
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.034002483443708,
-        "y": 5.194515728476819
+        "x": 5.477110927152317,
+        "y": 3.087934602649006
       },
       "prevControl": {
-        "x": 5.72408940397351,
-        "y": 5.942715231788078
+        "x": 5.632160596026489,
+        "y": 2.4422599337748334
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.24882633654694
+    "rotation": 122.47119229084846
   },
   "reversed": false,
-  "folder": "Alliance Zone",
+  "folder": "Rival Zone FEB",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
