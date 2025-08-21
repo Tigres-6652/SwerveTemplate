@@ -2,15 +2,16 @@ package frc.robot.subsystems.mechanism;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
   WPI_TalonSRX TalonELevatorRigt = new WPI_TalonSRX(13);
-  WPI_TalonSRX TalonELevatorLeft = new WPI_TalonSRX(14);
+  WPI_VictorSPX TalonELevatorLeft = new WPI_VictorSPX(14);
 
-  DigitalInput LimitSwich = new DigitalInput(0);
+  DigitalInput LimitSwich = new DigitalInput(9);
 
   public void EjeElevador(double velinf) {
     if (LimitSwich.get() && DistanciaElevador() < -350) {

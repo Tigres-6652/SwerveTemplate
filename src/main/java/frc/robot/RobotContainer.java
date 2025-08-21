@@ -56,7 +56,7 @@ public class RobotContainer {
         "ResetOn", new InstantCommand(() -> elevator.ResetEncoderLimit(true), elevator));
     NamedCommands.registerCommand(
         "ResetOff", new InstantCommand(() -> elevator.ResetEncoderLimit(false), elevator));
-
+    NamedCommands.registerCommand("xd", new InstantCommand(() -> elevator.speed(-0.5), elevator));
     // Intake
     outake.setDefaultCommand(
         new OutakeCommands(
