@@ -30,6 +30,7 @@ public class ElevatorCommand extends Command {
   @Override
   public void initialize() {
     elevator.ConfiguracionMotor();
+    elevator.ResetEncoderLimit(true);
   }
 
   @Override

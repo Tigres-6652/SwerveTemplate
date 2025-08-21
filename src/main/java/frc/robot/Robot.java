@@ -37,6 +37,8 @@ public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
 
+  //  private final Elevator elevator = new Elevator();
+
   public Robot() {
     CameraServer.startAutomaticCapture();
 
@@ -133,6 +135,7 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    //  elevator.ResetEncoderLimit(true);
     autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)

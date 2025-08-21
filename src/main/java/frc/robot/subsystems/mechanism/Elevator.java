@@ -28,9 +28,6 @@ public class Elevator extends SubsystemBase {
     } else if (DistanciaElevador() > -300 && velinf > 0.001 && LimitSwich.get()) {
       TalonELevatorLeft.set(-velinf);
     }
-    if (!LimitSwich.get()) {
-      TalonELevatorLeft.setSelectedSensorPosition(0);
-    }
   }
 
   public double DistanciaElevador() {
@@ -73,8 +70,6 @@ public class Elevator extends SubsystemBase {
   }
 
   public void ConfiguracionMotor() {
-    TalonELevatorLeft.configFactoryDefault();
-
     TalonELevatorLeft.configNominalOutputForward(0, 30);
     TalonELevatorLeft.configNominalOutputReverse(0, 30);
     TalonELevatorLeft.configPeakOutputForward(1, 30);

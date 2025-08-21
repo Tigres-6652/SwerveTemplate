@@ -45,13 +45,17 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "OutakeStop", new InstantCommand(() -> outake.OutakeController(0), outake));
     NamedCommands.registerCommand(
-        "ElevatorL2", new InstantCommand(() -> elevator.MovimientoElevador(-110), elevator));
+        "ElelvatorL3", new InstantCommand(() -> elevator.MovimientoElevador(-20), elevator));
+    NamedCommands.registerCommand(
+        "ElevatorL2", new InstantCommand(() -> elevator.MovimientoElevador(300), elevator));
     NamedCommands.registerCommand(
         "Zero", new InstantCommand(() -> elevator.MovimientoElevador(0), elevator));
     NamedCommands.registerCommand(
         "ElevatorHome", new InstantCommand(() -> elevator.MovimientoElevador(-2), elevator));
     NamedCommands.registerCommand(
-        "Reset", new InstantCommand(() -> elevator.ResetEncoderLimit(true), elevator));
+        "ResetOn", new InstantCommand(() -> elevator.ResetEncoderLimit(true), elevator));
+    NamedCommands.registerCommand(
+        "ResetOff", new InstantCommand(() -> elevator.ResetEncoderLimit(false), elevator));
 
     // Intake
     outake.setDefaultCommand(
@@ -114,12 +118,14 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
+    // Red  +
+    // Blue -
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
+            () -> controller.getLeftY(),
+            () -> controller.getLeftX(),
+            () -> controller.getRightX()));
 
     // Lock to 0° when A button is held
     controller
