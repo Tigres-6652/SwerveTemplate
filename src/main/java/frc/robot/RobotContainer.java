@@ -57,6 +57,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "ResetOff", new InstantCommand(() -> elevator.ResetEncoderLimit(false), elevator));
     NamedCommands.registerCommand("xd", new InstantCommand(() -> elevator.speed(-0.5), elevator));
+    NamedCommands.registerCommand("xs", new InstantCommand(() -> elevator.speed(0.5), elevator));
     // Intake
     outake.setDefaultCommand(
         new OutakeCommands(
@@ -123,7 +124,7 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> controller.getLeftY(),
+            () -> -controller.getLeftY(),
             () -> controller.getLeftX(),
             () -> controller.getRightX()));
 
